@@ -11,6 +11,11 @@ class ApplicationSerializer(Serializer):
     contact_phone = CharField()
     ticket_type = CharField()
 
+    def validate_ticket_type(self, value):
+        if value not in ['standard-access', 'pro-access', 'premium-access']:
+            raise ValidationError('Wrong value')
+        return value
+
 
 def validate(data):
     serializer = ApplicationSerializer(data=data)
