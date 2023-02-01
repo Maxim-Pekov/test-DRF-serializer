@@ -3,19 +3,18 @@ from rest_framework.response import Response
 
 from .models import Application, Participant
 from rest_framework.serializers import ValidationError
+from rest_framework.serializers import Serializer
+from rest_framework.serializers import CharField
+
+
+class ApplicationSerializer(Serializer):
+    contact_phone = CharField()
+    ticket_type = CharField()
 
 
 def validate(data):
-    errors = []
-    if 'contact_phone' not in data:
-        errors.append('Contact phone field is required.')
-
-    if 'ticket_type' not in data:
-        errors.append('Ticket type field is required.')
-    # TODO check if ticket_type is one of available choices
-
-    if errors:
-        raise ValidationError(errors)
+    serializer = ApplicationSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
 
 
 @api_view(['POST'])
