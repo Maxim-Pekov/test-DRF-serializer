@@ -6,17 +6,21 @@ from rest_framework.serializers import ValidationError
 from rest_framework.serializers import Serializer
 from rest_framework.serializers import CharField
 from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ListField
 
-
-class ApplicationSerializer(ModelSerializer):
-    class Meta:
-        model = Application
-        fields = ['contact_phone', 'ticket_type']
 
 class ParticipantSerializer(ModelSerializer):
     class Meta:
         model = Participant
         fields = ['first_name', 'last_name', 'email']
+
+
+class ApplicationSerializer(ModelSerializer):
+    participants = ParticipantSerializer(many=True)
+
+    class Meta:
+        model = Application
+        fields = ['contact_phone', 'ticket_type', 'participants']
 
 
 @api_view(['POST'])
