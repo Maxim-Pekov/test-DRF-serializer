@@ -6,12 +6,16 @@ from rest_framework.serializers import ValidationError
 
 
 def validate(data):
+    errors = []
     if 'contact_phone' not in data:
-        raise ValidationError(['Contact phone field is required.'])
+        errors.append('Contact phone field is required.')
 
     if 'ticket_type' not in data:
-        raise ValidationError(['Ticket type field is required.'])
+        errors.append('Ticket type field is required.')
     # TODO check if ticket_type is one of available choices
+
+    if errors:
+        raise ValidationError(errors)
 
 
 @api_view(['POST'])
