@@ -2,17 +2,18 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Application, Participant
+from rest_framework.serializers import ValidationError
 
 
 @api_view(['POST'])
 def enroll(request):
     if 'contact_phone' not in request.data:
-        return Response(['Contact phone field is required.'], status=400)
+        raise ValidationError(['Contact phone field is required.'])
 
     if 'ticket_type' not in request.data:
-        return Response(['Ticket type field is required.'], status=400)
+        raise ValidationError(['Ticket type field is required.'])
     # TODO check if ticket_type is one of available choices
-    
+
     participants = request.data.get('participants', [])  # TODO validate data!
 
     application = Application.objects.create(
